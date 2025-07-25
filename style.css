@@ -1,0 +1,176 @@
+/* ---------- Style Global ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f8f9fc;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Liens et boutons */
+a, button {
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn {
+  background: #4e73df;
+  color: #fff;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 25px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:hover {
+  background: #375acb;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- Header & Titres ---------- */
+header {
+  text-align: center;
+  padding: 40px 10px 20px;
+}
+
+header h1 {
+  color: #333;
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* ---------- Page d'accueil (index.html) ---------- */
+.home-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(270deg, #4e73df, #1cc88a, #36b9cc);
+  background-size: 600% 600%;
+  animation: gradientBG 12s ease infinite;
+  color: #fff;
+  overflow: hidden;
+  padding: 20px;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.typewriter {
+  display: inline-block;
+  border-right: 3px solid #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+/* ---------- MBTI Page (mbti.html) ---------- */
+.custom-select {
+  position: relative;
+  width: 300px;
+  margin: 0 auto 30px;
+  user-select: none;
+  text-align: left;
+}
+
+.select-selected {
+  background-color: #4e73df;
+  color: white;
+  padding: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+}
+
+.select-items {
+  position: absolute;
+  background-color: white;
+  border-radius: 5px;
+  top: 110%;
+  left: 0;
+  right: 0;
+  display: none;
+  z-index: 99;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.select-items div {
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.select-items div:hover {
+  background-color: #4e73df;
+  color: white;
+}
+
+/* ---------- Résultats ---------- */
+.result {
+  max-width: 600px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px 25px;
+  text-align: left;
+}
+
+.result h2 {
+  margin-top: 0;
+  color: #4e73df;
+}
+
+.result h3 {
+  margin-top: 15px;
+  color: #333;
+}
+
+.result p {
+  color: #444;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  header h1 { font-size: 1.8rem; }
+  .typewriter { font-size: 1rem; }
+  .btn { font-size: 0.9rem; padding: 10px 20px; }
+  .custom-select { width: 90%; }
+}

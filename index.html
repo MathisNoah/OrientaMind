@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OrientaMind - Accueil</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(270deg, #4e73df, #1cc88a, #36b9cc);
+      background-size: 600% 600%;
+      animation: gradientBG 12s ease infinite;
+      z-index: -1;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .typewriter {
+      display: inline-block;
+      border-right: 3px solid #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+      font-size: 1.5rem;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .btn {
+      background: white;
+      color: #4e73df;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+      background: #4e73df;
+      color: white;
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .btns-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btns-top {
+      margin-top: 25px;
+    }
+
+    .btn-main {
+      background: #4e73df;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .btn-main:hover {
+      background: #fff;
+      color: #4e73df;
+    }
+
+    /* --- MODALE --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      color: #333;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+      color: #4e73df;
+    }
+
+    .modal-content input, .modal-content textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .close {
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      color: #888;
+      float: right;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.9);}
+      to {opacity: 1; transform: scale(1);}
+    }
+
+    /* Bouton Wave */
+    .wave-number {
+      font-size: 1.2rem;
+      margin: 10px 0;
+      font-weight: bold;
+      color: #4e73df;
+    }
+
+    .copy-btn {
+      background: #4e73df;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    .copy-btn:hover {
+      background: #375acb;
+    }
+
+    /* Toast Notification */
+    .toast {
+      visibility: hidden;
+      min-width: 250px;
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      text-align: center;
+      border-radius: 30px;
+      padding: 15px 20px;
+      position: fixed;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      z-index: 200;
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity 0.4s ease, bottom 0.4s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .toast.show {
+      visibility: visible;
+      opacity: 1;
+      bottom: 50px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .typewriter { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Particules -->
+  <div id="particles-js"></div>
+
+  <!-- Contenu -->
+  <div class="container">
+    <h1>Bienvenue sur <span style="color: #FFD700;">OrientaMind</span></h1>
+    <div class="typewriter">Découvrez votre personnalité MBTI et vos métiers idéaux...</div>
+
+    <!-- Bouton Commencer le test -->
+    <div class="btns-top">
+      <a href="profil.html" class="btn btn-main">Commencer le test</a>
+    </div>
+
+    <!-- Boutons Avis & Don -->
+    <div class="btns-group">
+      <button class="btn" onclick="openModal('avisModal')">Donner un avis</button>
+      <button class="btn" onclick="openModal('waveModal')">Faire un don Wave</button>
+    </div>
+  </div>
+
+  <!-- Modale Avis -->
+  <div class="modal" id="avisModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('avisModal')">&times;</span>
+      <h2>Donner un avis</h2>
+      <form action="https://formspree.io/f/xzzvrvry" method="POST">
+        <input type="text" name="name" placeholder="Votre nom" required>
+        <input type="email" name="email" placeholder="Votre email" required>
+        <textarea name="message" rows="4" placeholder="Votre avis" required></textarea>
+        <button type="submit" class="btn">Envoyer</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modale Wave -->
+  <div class="modal" id="waveModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('waveModal')">&times;</span>
+      <h2>Faire un don via Wave</h2>
+      <p>Pour faire un don, ouvrez votre application Wave et envoyez à :</p>
+      <p class="wave-number" id="waveNumber">+225 07 18 05 55 14</p>
+      <button class="copy-btn" onclick="copierNumero()">Copier le numéro</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">Numéro copié !</div>
+
+  <!-- Script Particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // Particules
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 80 },
+        "color": { "value": "#ffffff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#ffffff",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": { "enable": true, "speed": 3 }
+      },
+      "interactivity": {
+        "events": {
+          "onhover": { "enable": true, "mode": "repulse" },
+          "onclick": { "enable": true, "mode": "push" }
+        },
+        "modes": { "repulse": { "distance": 100 } }
+      },
+      "retina_detect": true
+    });
+
+    // Fonctions Modales
+    function openModal(id) {
+      document.getElementById(id).style.display = "flex";
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    // Copier numéro Wave
+    function copierNumero() {
+      const numero = document.getElementById('waveNumber').innerText;
+      navigator.clipboard.writeText(numero)
+        .then(() => {
+          showToast("Numéro Wave copié : " + numero);
+        })
+        .catch(() => {
+          showToast("Impossible de copier, notez le numéro : " + numero);
+        });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.innerText = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000); // 3 secondes avant de disparaître
+    }
+
+    // Redirection après avis
+    document.querySelector('#avisModal form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+
+      fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          window.location.href = "merci.html";
+        } else {
+          showToast("Erreur lors de l’envoi. Réessayez !");
+        }
+      }).catch(() => {
+        showToast("Impossible d’envoyer votre avis.");
+      });
+    });
+  </script>
+</body>
+</html>

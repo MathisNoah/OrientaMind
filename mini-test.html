@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OrientaMind - Mini Test MBTI</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(270deg, #ff6e7f, #bfe9ff, #667eea);
+    background-size: 600% 600%;
+    animation: gradientBG 15s ease infinite;
+    color: white;
+    overflow-x: hidden;
+  }
+  @keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+  #particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    top: 0; left: 0;
+    pointer-events: none;
+  }
+  .container {
+    position: relative;
+    z-index: 10;
+    max-width: 800px;
+    margin: 60px auto 60px auto;
+    padding: 40px 30px 60px 30px;
+    background: rgba(255 255 255 / 0.12);
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+  }
+  h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(255,255,255,0.6);
+  }
+  p.subtitle {
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    color: rgba(255 255 255 / 0.85);
+  }
+  form {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .question {
+    background: rgba(0 0 0 / 0.3);
+    margin-bottom: 20px;
+    padding: 20px 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    user-select: none;
+  }
+  .question p {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #fff;
+  }
+  .answers {
+    display: flex;
+    justify-content: space-around;
+  }
+  .answers label {
+    background: rgba(255 255 255 / 0.2);
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    flex: 1;
+    margin: 0 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+  }
+  .answers label:hover {
+    background: #fff;
+    color: #ff6e7f;
+    box-shadow: 0 0 12px #ff6e7f;
+  }
+  input[type="radio"] {
+    display: none;
+  }
+  input[type="radio"]:checked + label {
+    background: #ff6e7f;
+    color: white;
+    box-shadow: 0 0 20px #ff6e7f;
+  }
+  button#submitBtn {
+    margin-top: 35px;
+    display: block;
+    background: #667eea;
+    color: white;
+    border: none;
+    font-weight: 800;
+    font-size: 1.3rem;
+    padding: 18px 60px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(102,126,234,0.7);
+    transition: background-color 0.3s ease, transform 0.25s ease;
+    user-select: none;
+  }
+  button#submitBtn:hover {
+    background: #5165d8;
+    transform: translateY(-5px);
+  }
+  #result {
+    margin-top: 50px;
+    background: white;
+    color: #222;
+    padding: 30px 35px;
+    border-radius: 25px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    font-weight: 500;
+    line-height: 1.6;
+  }
+  #result h2 {
+    color: #ff6e7f;
+    font-weight: 900;
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  #result h3 {
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #667eea;
+  }
+  #result ul {
+    margin-top: 10px;
+    padding-left: 20px;
+  }
+  #result ul li {
+    margin-bottom: 6px;
+  }
+  .info-text {
+    margin-top: 25px;
+    font-size: 0.95rem;
+    font-style: italic;
+    text-align: center;
+    color: rgba(255 255 255 / 0.7);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  a.btn-return {
+    display: block;
+    margin: 50px auto 10px auto;
+    width: max-content;
+    background: #ff6e7f;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 14px 45px;
+    border-radius: 50px;
+    box-shadow: 0 7px 30px rgba(255,110,127,0.7);
+    transition: background-color 0.3s ease, transform 0.25s ease;
+    user-select: none;
+  }
+  a.btn-return:hover {
+    background: #e95563;
+    transform: translateY(-4px);
+  }
+
+  @media (max-width: 720px) {
+    .answers {
+      flex-direction: column;
+    }
+    .answers label {
+      margin: 8px 0;
+    }
+    button#submitBtn {
+      padding: 16px 40px;
+      font-size: 1.15rem;
+    }
+    .container {
+      margin: 40px 15px 40px 15px;
+      padding: 30px 20px 40px 20px;
+    }
+  }
+  @media (max-width: 420px) {
+    h1 {
+      font-size: 2.4rem;
+    }
+    button#submitBtn {
+      padding: 14px 30px;
+      font-size: 1.05rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="particles-js"></div>
+
+<div class="container">
+  <h1>Mini Test MBTI</h1>
+  <p class="subtitle">Réponds rapidement aux 15 questions pour découvrir ton type MBTI approximatif.<br>
+  (Test rapide & non officiel)</p>
+
+  <form id="mbtiForm">
+    <!-- 15 questions -->
+    <div class="question">
+      <p>1. Tu préfères :</p>
+      <div class="answers">
+        <input type="radio" id="q1a" name="q1" value="E" required /><label for="q1a">Sortir avec des amis</label>
+        <input type="radio" id="q1b" name="q1" value="I" /><label for="q1b">Rester seul à la maison</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>2. Quand tu apprends, tu préfères :</p>
+      <div class="answers">
+        <input type="radio" id="q2a" name="q2" value="S" required /><label for="q2a">Des faits concrets</label>
+        <input type="radio" id="q2b" name="q2" value="N" /><label for="q2b">Des idées et concepts</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>3. Tu prends tes décisions plutôt avec :</p>
+      <div class="answers">
+        <input type="radio" id="q3a" name="q3" value="T" required /><label for="q3a">La logique et la raison</label>
+        <input type="radio" id="q3b" name="q3" value="F" /><label for="q3b">Les émotions et les valeurs</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>4. Tu préfères organiser ta vie :</p>
+      <div class="answers">
+        <input type="radio" id="q4a" name="q4" value="J" required /><label for="q4a">De façon planifiée</label>
+        <input type="radio" id="q4b" name="q4" value="P" /><label for="q4b">De façon spontanée</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>5. En groupe, tu es plutôt :</p>
+      <div class="answers">
+        <input type="radio" id="q5a" name="q5" value="E" required /><label for="q5a">Leader naturel</label>
+        <input type="radio" id="q5b" name="q5" value="I" /><label for="q5b">Observateur calme</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>6. Tu préfères te fier à :</p>
+      <div class="answers">
+        <input type="radio" id="q6a" name="q6" value="S" required /><label for="q6a">Ce que tu vois et touches</label>
+        <input type="radio" id="q6b" name="q6" value="N" /><label for="q6b">Ce que tu imagines</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>7. Tes décisions sont souvent basées sur :</p>
+      <div class="answers">
+        <input type="radio" id="q7a" name="q7" value="T" required /><label for="q7a">La logique stricte</label>
+        <input type="radio" id="q7b" name="q7" value="F" /><label for="q7b">L'empathie et les sentiments</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>8. Tu préfères avoir :</p>
+      <div class="answers">
+        <input type="radio" id="q8a" name="q8" value="J" required /><label for="q8a">Un planning clair</label>
+        <input type="radio" id="q8b" name="q8" value="P" /><label for="q8b">La liberté de changer</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>9. Au travail, tu es plutôt :</p>
+      <div class="answers">
+        <input type="radio" id="q9a" name="q9" value="E" required /><label for="q9a">Sociable et actif</label>
+        <input type="radio" id="q9b" name="q9" value="I" /><label for="q9b">Réfléchi et réservé</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>10. Tu préfères apprendre :</p>
+      <div class="answers">
+        <input type="radio" id="q10a" name="q10" value="S" required /><label for="q10a">Des expériences concrètes</label>
+        <input type="radio" id="q10b" name="q10" value="N" /><label for="q10b">Des théories et idées</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>11. Quand tu prends une décision, tu privilégies :</p>
+      <div class="answers">
+        <input type="radio" id="q11a" name="q11" value="T" required /><label for="q11a">La justice et la logique</label>
+        <input type="radio" id="q11b" name="q11" value="F" /><label for="q11b">L'harmonie et les émotions</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>12. Tu préfères :</p>
+      <div class="answers">
+        <input type="radio" id="q12a" name="q12" value="J" required /><label for="q12a">Une vie organisée</label>
+        <input type="radio" id="q12b" name="q12" value="P" /><label for="q12b">Une vie flexible</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>13. Tu es plutôt :</p>
+      <div class="answers">
+        <input type="radio" id="q13a" name="q13" value="E" required /><label for="q13a">Extraverti et énergique</label>
+        <input type="radio" id="q13b" name="q13" value="I" /><label for="q13b">Introverti et calme</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>14. Tu préfères te concentrer sur :</p>
+      <div class="answers">
+        <input type="radio" id="q14a" name="q14" value="S" required /><label for="q14a">Le présent et les détails</label>
+        <input type="radio" id="q14b" name="q14" value="N" /><label for="q14b">Les possibilités et l'avenir</label>
+      </div>
+    </div>
+    <div class="question">
+      <p>15. Pour prendre des décisions importantes, tu t'appuies sur :</p>
+      <div class="answers">
+        <input type="radio" id="q15a" name="q15" value="T" required /><label for="q15a">La raison et les faits</label>
+        <input type="radio" id="q15b" name="q15" value="F" /><label for="q15b">Les valeurs et sentiments</label>
+      </div>
+    </div>
+
+    <button type="submit" id="submitBtn">Voir mon résultat</button>
+  </form>
+
+  <div id="result" style="display:none;"></div>
+  <p class="info-text">Ce test rapide ne remplace pas un test MBTI officiel mais donne une bonne idée générale.</p>
+  <a href="profil.html" class="btn-return">Retour au choix du type MBTI</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80 },
+      color: { value: "#ffffff" },
+      shape: { type: "circle" },
+      opacity: { value: 0.4 },
+      size: { value: 3 },
+      line_linked: {
+        enable: true,
+        distance: 150,
+        color: "#ffffff",
+        opacity: 0.3,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 3,
+        direction: "none",
+        out_mode: "out"
+      }
+    },
+    interactivity: {
+      events: {
+        onhover: { enable: true, mode: "repulse" },
+        onclick: { enable: true, mode: "push" }
+      },
+      modes: {
+        repulse: { distance: 100 },
+        push: { particles_nb: 4 }
+      }
+    },
+    retina_detect: true
+  });
+</script>
+<script>
+  const mbtiProfiles = {
+    ISTJ: {
+      name: "ISTJ - Logisticien",
+      description: `Pragmatique, responsable et organisé. Tu aimes les traditions, le travail bien fait et tu es fiable.`,
+      careers: ["Comptable", "Administrateur", "Inspecteur", "Ingénieur", "Officier de police"]
+    },
+    ISFJ: {
+      name: "ISFJ - Défenseur",
+      description: `Dévoué, protecteur et attentionné. Tu es loyal et sensible aux besoins des autres.`,
+      careers: ["Infirmier", "Enseignant", "Conseiller", "Travailleur social", "Bibliothécaire"]
+    },
+    INFJ: {
+      name: "INFJ - Avocat",
+      description: `Idéaliste, visionnaire et déterminé. Tu cherches à améliorer le monde autour de toi.`,
+      careers: ["Psychologue", "Écrivain", "Conseiller", "Artiste", "Travailleur humanitaire"]
+    },
+    INTJ: {
+      name: "INTJ - Architecte",
+      description: `Analytique, stratégique et indépendant. Tu es un planificateur et un innovateur.`,
+      careers: ["Scientifique", "Ingénieur", "Développeur logiciel", "Chercheur", "Consultant"]
+    },
+    ISTP: {
+      name: "ISTP - Virtuose",
+      description: `Pratique, observateur et adaptable. Tu aimes résoudre des problèmes concrets.`,
+      careers: ["Mécanicien", "Ingénieur", "Programmeur", "Artisan", "Technicien"]
+    },
+    ISFP: {
+      name: "ISFP - Aventurier",
+      description: `Créatif, sensible et calme. Tu apprécies la beauté et la spontanéité.`,
+      careers: ["Artiste", "Designer", "Musicien", "Photographe", "Infirmier"]
+    },
+    INFP: {
+      name: "INFP - Médiateur",
+      description: `Idéaliste, empathique et loyal. Tu cherches un sens profond et la paix intérieure.`,
+      careers: ["Écrivain", "Psychologue", "Éducateur", "Artiste", "Conseiller"]
+    },
+    INTP: {
+      name: "INTP - Logicien",
+      description: `Curieux, analytique et indépendant. Tu aimes explorer des concepts complexes.`,
+      careers: ["Chercheur", "Philosophe", "Programmeur", "Ingénieur", "Scientifique"]
+    },
+    ESTP: {
+      name: "ESTP - Entrepreneur",
+      description: `Énergique, spontané et pragmatique. Tu aimes l'action et prendre des risques.`,
+      careers: ["Vendeur", "Entrepreneur", "Agent immobilier", "Sportif", "Officier de police"]
+    },
+    ESFP: {
+      name: "ESFP - Amuseur",
+      description: `Sociable, joyeux et chaleureux. Tu aimes divertir et profiter de la vie.`,
+      careers: ["Animateur", "Artiste", "Conseiller", "Enseignant", "Vendeur"]
+    },
+    ENFP: {
+      name: "ENFP - Inspirateur",
+      description: `Enthousiaste, créatif et sociable. Tu es motivé par les idées et les gens.`,
+      careers: ["Journaliste", "Conseiller", "Écrivain", "Publicitaire", "Coach"]
+    },
+    ENTP: {
+      name: "ENTP - Visionnaire",
+      description: `Ingénieux, énergique et débrouillard. Tu adores les débats et les idées nouvelles.`,
+      careers: ["Entrepreneur", "Inventeur", "Journaliste", "Consultant", "Avocat"]
+    },
+    ESTJ: {
+      name: "ESTJ - Directeur",
+      description: `Organisé, franc et pragmatique. Tu aimes diriger et structurer.`,
+      careers: ["Manager", "Officier militaire", "Administrateur", "Avocat", "Politicien"]
+    },
+    ESFJ: {
+      name: "ESFJ - Consul",
+      description: `Chaleureux, sociable et attentif. Tu aimes aider les autres et maintenir l’harmonie.`,
+      careers: ["Infirmier", "Enseignant", "Responsable RH", "Organisateur", "Vendeur"]
+    },
+    ENFJ: {
+      name: "ENFJ - Leader",
+      description: `Charismatique, empathique et organisé. Tu inspires les autres et favorises la coopération.`,
+      careers: ["Coach", "Enseignant", "Responsable", "Psychologue", "Politicien"]
+    },
+    ENTJ: {
+      name: "ENTJ - Commandant",
+      description: `Décidé, stratégique et naturel leader. Tu prends des initiatives et vises l’excellence.`,
+      careers: ["Chef d’entreprise", "Avocat", "Ingénieur", "Consultant", "Directeur"]
+    }
+  };
+
+  function renderProfile(type) {
+    const result = document.getElementById("result");
+    const profile = mbtiProfiles[type];
+    if (!profile) {
+      result.style.display = "none";
+      result.innerHTML = "";
+      return;
+    }
+    result.innerHTML = `
+      <h2>${profile.name}</h2>
+      <p>${profile.description}</p>
+      <h3>Métiers adaptés :</h3>
+      <ul>
+        ${profile.careers.map(job => `<li>${job}</li>`).join('')}
+      </ul>
+    `;
+    result.style.display = "block";
+    result.scrollIntoView({behavior: 'smooth'});
+  }
+
+  document.getElementById("mbtiForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    // Récupérer les réponses
+    const formData = new FormData(e.target);
+    const counts = {E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0};
+    for (let [key, value] of formData.entries()) {
+      if (value in counts) {
+        counts[value]++;
+      }
+    }
+    // Calcul des lettres finales : on prend la lettre la plus choisie dans chaque dichotomie
+    const EI = counts.E >= counts.I ? "E" : "I";
+    const SN = counts.S >= counts.N ? "S" : "N";
+    const TF = counts.T >= counts.F ? "T" : "F";
+    const JP = counts.J >= counts.P ? "J" : "P";
+
+    const finalType = EI + SN + TF + JP;
+    renderProfile(finalType);
+  });
+</script>
+
+</body>
+</html>

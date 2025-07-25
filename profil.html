@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Découvrez votre profil MBTI et les métiers qui vous correspondent avec OrientaMind. Mini test rapide ou sélection manuelle de votre type." />
+<meta name="keywords" content="MBTI, test de personnalité, orientation, métiers, psychologie, OrientaMind" />
+<meta property="og:title" content="OrientaMind - Test MBTI" />
+<meta property="og:description" content="Connaissez-vous votre type MBTI ? Découvrez les métiers qui vous correspondent avec OrientaMind." />
+<meta property="og:image" content="https://ton-site.com/images/preview.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ton-site.com/profil.html" />
+
+  <title>OrientaMind - Test MBTI</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* Reset & global */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(270deg, #4e73df, #1cc88a, #36b9cc);
+      background-size: 600% 600%;
+      animation: gradientBG 12s ease infinite;
+      color: white;
+      overflow-x: hidden;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+    .container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+      border-right: 3px solid rgba(255,255,255,0.8);
+      white-space: nowrap;
+      overflow: hidden;
+      animation:
+        typing 3.5s steps(40, end),
+        blink 0.75s step-end infinite;
+      max-width: 100%;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    p.subtitle {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 40px;
+      color: rgba(255,255,255,0.85);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    label[for="unknownType"] {
+      display: block;
+      margin-bottom: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      font-size: 1.1rem;
+    }
+    input#unknownType {
+      margin-right: 10px;
+      transform: scale(1.3);
+      vertical-align: middle;
+    }
+    .btn {
+      display: none;
+      max-width: 320px;
+      margin: 15px auto;
+      background: #4e73df;
+      color: white;
+      padding: 15px 35px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      user-select: none;
+      text-align: center;
+    }
+    .btn:hover {
+      background: #375acb;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+      transform: translateY(-3px);
+    }
+    .custom-select {
+      position: relative;
+      width: 320px;
+      max-width: 100%;
+      user-select: none;
+      margin: 0 auto 40px auto;
+      cursor: pointer;
+    }
+    .select-selected {
+      background-color: rgba(255 255 255 / 0.2);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 0 15px rgba(255 255 255 / 0.25);
+      transition: background-color 0.3s ease;
+      user-select: none;
+      text-align: center;
+    }
+    .select-selected:hover {
+      background-color: rgba(255 255 255 / 0.35);
+      box-shadow: 0 0 25px rgba(255 255 255 / 0.4);
+    }
+    .select-items {
+      position: absolute;
+      background-color: rgba(255 255 255 / 0.9);
+      color: #4e73df;
+      border-radius: 20px;
+      top: 120%;
+      left: 0;
+      right: 0;
+      display: none;
+      max-height: 280px;
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      font-weight: 600;
+      user-select: none;
+      text-align: center;
+      z-index: 20;
+      padding: 8px 0;
+      scrollbar-width: thin;
+      scrollbar-color: #4e73df transparent;
+    }
+    .select-items::-webkit-scrollbar {
+      width: 8px;
+    }
+    .select-items::-webkit-scrollbar-thumb {
+      background-color: #4e73df;
+      border-radius: 4px;
+    }
+    .select-items div {
+      padding: 12px 0;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      border-radius: 15px;
+    }
+    .select-items div:hover {
+      background-color: #4e73df;
+      color: white;
+      box-shadow: 0 0 10px #4e73df;
+    }
+    #result {
+      background-color: rgba(255 255 255 / 0.95);
+      border-radius: 25px;
+      padding: 30px 40px;
+      max-width: 700px;
+      color: #2c3e50;
+      font-weight: 500;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      text-align: left;
+      line-height: 1.6;
+      margin: 0 auto 40px auto;
+      display: none;
+    }
+    #result h2 {
+      color: #4e73df;
+      font-weight: 900;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    #result h3 {
+      margin-top: 25px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #34495e;
+    }
+    #result ul {
+      margin-top: 10px;
+      padding-left: 20px;
+      color: #34495e;
+      font-weight: 500;
+    }
+    #result ul li {
+      margin-bottom: 6px;
+    }
+    #result ul.resources {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 10px;
+    }
+    #result ul.resources li {
+      margin-bottom: 8px;
+    }
+    #result ul.resources li a {
+      color: #4e73df;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+    #result ul.resources li a:hover,
+    #result ul.resources li a:focus {
+      color: #1cc88a;
+      text-decoration: underline;
+    }
+    @media (max-width: 700px) {
+      h1 { font-size: 2.4rem; }
+      p.subtitle { font-size: 1.1rem; }
+      #result { padding: 25px 20px; margin-bottom: 30px; }
+      .btn { padding: 14px 30px; font-size: 1rem; }
+    }
+    @media (max-width: 400px) {
+      h1 { font-size: 2rem; }
+      .select-selected { font-size: 1rem; padding: 12px 15px; }
+      .select-items div { padding: 10px 0; font-size: 0.95rem; }
+      #result { font-size: 0.9rem; }
+      .btn { padding: 12px 25px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <div class="container">
+    <h1>Test d'Orientation</h1>
+    <p class="subtitle">Sélectionne ton type MBTI pour découvrir ton profil unique et les métiers adaptés</p>
+
+    <label for="unknownType">
+      <input type="checkbox" id="unknownType" />
+      Je ne connais pas mon type MBTI
+    </label>
+
+    <a href="mini-test.html" id="btnMiniTestRapide" class="btn" >Faire le mini test MBTI rapide</a><br>
+    <a href="https://www.16personalities.com/fr/test-de-personnalite" id="btnMiniTestOfficiel" class="btn" target="_blank" rel="noopener noreferrer" >Faire le test MBTI officiel</a><br>
+
+    <div class="custom-select" id="mbtiSelect">
+      <div class="select-selected">-- Choisis ton type MBTI --</div>
+      <div class="select-items">
+        <div data-id="ISTJ">ISTJ - Logisticien</div>
+        <div data-id="ISFJ">ISFJ - Défenseur</div>
+        <div data-id="INFJ">INFJ - Avocat</div>
+        <div data-id="INTJ">INTJ - Architecte</div>
+        <div data-id="ISTP">ISTP - Virtuose</div>
+        <div data-id="ISFP">ISFP - Aventurier</div>
+        <div data-id="INFP">INFP - Médiateur</div>
+        <div data-id="INTP">INTP - Logicien</div>
+        <div data-id="ESTP">ESTP - Entrepreneur</div>
+        <div data-id="ESFP">ESFP - Amuseur</div>
+        <div data-id="ENFP">ENFP - Inspirateur</div>
+        <div data-id="ENTP">ENTP - Visionnaire</div>
+        <div data-id="ESTJ">ESTJ - Directeur</div>
+        <div data-id="ESFJ">ESFJ - Consul</div>
+        <div data-id="ENFJ">ENFJ - Leader</div>
+        <div data-id="ENTJ">ENTJ - Commandant</div>
+      </div>
+    </div>
+
+    <div id="result"></div>
+
+    <a href="index.html" class="btn" style="display: inline-block; margin-top: 20px;">Retour à l'accueil</a>
+  </div>
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="mbti.js"></script>
+  <script>
+  particlesJS("particles-js", {
+    "particles": {
+      "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+      "color": { "value": "#ffffff" },
+      "shape": {
+        "type": "circle",
+        "stroke": { "width": 0, "color": "#000000" },
+        "polygon": { "nb_sides": 5 }
+      },
+      "opacity": {
+        "value": 0.5,
+        "random": false,
+        "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffffff",
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 6,
+        "direction": "none",
+        "random": false,
+        "straight": false,
+        "out_mode": "out",
+        "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 }
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": { "enable": true, "mode": "repulse" },
+        "onclick": { "enable": true, "mode": "push" },
+        "resize": true
+      },
+      "modes": {
+        "grab": { "distance": 400, "line_linked": { "opacity": 1 } },
+        "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 },
+        "repulse": { "distance": 200, "duration": 0.4 },
+        "push": { "particles_nb": 4 },
+        "remove": { "particles_nb": 2 }
+      }
+    },
+    "retina_detect": true
+  });
+</script>
+
+</body>
+</html>
